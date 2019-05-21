@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "512292472057",
+    "firebase_url": "https://begharrissqlnotes.firebaseio.com",
+    "project_id": "begharrissqlnotes",
+    "storage_bucket": "begharrissqlnotes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512292472057:android:078572a8ab30ca61",
+        "android_client_info": {
+          "package_name": "com.example.sqlnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512292472057-0ormrrl0u5i6rsj1iqeo38pht6d94v99.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sqlnotes",
+            "certificate_hash": "c2915fecc0473909b5c45823499389c033287d51"
+          }
+        },
+        {
+          "client_id": "512292472057-73ng26l0lputvbc872eh7e57ho9vf99a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYVjPDPdTGcMYIGPsysMDX-JIvmi3hiTs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "512292472057-73ng26l0lputvbc872eh7e57ho9vf99a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

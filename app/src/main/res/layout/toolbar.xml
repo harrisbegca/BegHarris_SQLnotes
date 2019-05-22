@@ -19,7 +19,7 @@
             android:text="MyContactApp"
             android:textColor="#fff"
             android:textSize="24sp"
-            app:fontFamily="sans-serif-medium">
+            app:fontFamily="sans-serif-black">
 
         </TextView>
     </LinearLayout>

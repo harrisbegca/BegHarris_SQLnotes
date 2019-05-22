@@ -10,7 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-
+    private final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     }
     public void retrieveInfo(String name, String phone, String address) {
         DatabaseReference data = FirebaseDatabase.getInstance().getReference();
-        data.child("users").child("name").setValue("phone",phone);
+        Log.d(TAG, "BTN ");
+        data.child("users").child(name).child("address").setValue(address);
+        data.child("users").child(name).child("phone").setValue(phone);
     }
 }

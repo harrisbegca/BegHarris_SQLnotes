@@ -1,5 +1,6 @@
 package com.example.sqlnotes;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
-    private HashMap<String, String> details;
+    private Map<String, Object> details;
+    DatabaseHelper myDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,19 +34,17 @@ public class MainActivity extends AppCompatActivity {
         final TextView phone = (TextView) findViewById(R.id.phone);
         final TextView address = (TextView) findViewById(R.id.address);
         Button submit = (Button) findViewById(R.id.submit);
-
+        //myDb = new DatabaseHelper(this);
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users");
         data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         for (DataSnapshot d : dataSnapshot.getChildren()) {
-                            if (d != null) {
-                                String phone = d.child("phone").getValue(String.class);
-                                String address = d.child("address").getValue(String.class);
-                                if (phone != null)
-                                    details.put(d.getKey(), phone);
-                            }
+                            Map<String, Map<String, String>> td = (HashMap<String,Object>) dataSnapshot.getValue();
+                            details = td;
+                            Log.d(TAG, (Map<String, Object>)(details.
+                                    get("hello"))toString());
                         }
             }
 
@@ -59,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public void retrieveInfo(String name, String phone, String address) {
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users").child(name);
-        Log.d(TAG, "BTN ");
         data.child("address").setValue(address);
         data.child("phone").setValue(phone);
+        Log.d(TAG, data.child("phone").getKey());
+
     }
 }

@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
-    private Map<String, Object> details;
+    private Map<String, Map<String, String>> details;
     DatabaseHelper myDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +36,31 @@ public class MainActivity extends AppCompatActivity {
         Button submit = (Button) findViewById(R.id.submit);
         //myDb = new DatabaseHelper(this);
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users");
-        data.addValueEventListener(new ValueEventListener() {
+        data.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, dataSnapshot.getKey());
+                    Map<String, String> hm = new HashMap<String, String>();
+                    hm.put("phone", dataSnapshot.child("phone").getValue(String.class));
+                    hm.put("address", dataSnapshot.child("address").getValue(String.class));
+                    details.put(s, hm);
+                    getAllData();
 
-                        for (DataSnapshot d : dataSnapshot.getChildren()) {
-                            Map<String, Map<String, String>> td = (HashMap<String,Object>) dataSnapshot.getValue();
-                            details = td;
-                            Log.d(TAG, (Map<String, Object>)(details.
-                                    get("hello"))toString());
-                        }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
@@ -66,5 +81,11 @@ public class MainActivity extends AppCompatActivity {
         data.child("phone").setValue(phone);
         Log.d(TAG, data.child("phone").getKey());
 
+    }
+    public void getAllData() {
+        for (Map<String, String> h : details.values()) {
+            Log.d(TAG, h.get("address"));
+            Log.d(TAG, h.get("phone"));
+        }
     }
 }

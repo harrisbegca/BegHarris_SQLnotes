@@ -1,5 +1,7 @@
 package com.example.sqlnotes;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,29 +27,25 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
-    private Map<String, Map<String, String>> details;
+    private HashMap<String, HashMap<String, String>> details = new HashMap<>();
     DatabaseHelper myDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("Hi", "Hello World");
-        final TextView name = (TextView) findViewById(R.id.name);
-        final TextView phone = (TextView) findViewById(R.id.phone);
-        final TextView address = (TextView) findViewById(R.id.address);
-        Button submit = (Button) findViewById(R.id.submit);
+        final TextView name = findViewById(R.id.name);
+        final TextView phone = findViewById(R.id.phone);
+        final TextView address = findViewById(R.id.address);
+        Button submit = findViewById(R.id.submit);
         //myDb = new DatabaseHelper(this);
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users");
         data.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d(TAG, dataSnapshot.getKey());
-                    Map<String, String> hm = new HashMap<String, String>();
+                    HashMap<String, String> hm = new HashMap<>();
                     hm.put("phone", dataSnapshot.child("phone").getValue(String.class));
                     hm.put("address", dataSnapshot.child("address").getValue(String.class));
-                    details.put(s, hm);
-                    getAllData();
-
+                    details.put(dataSnapshot.getKey(), hm);
             }
 
             @Override
@@ -74,18 +74,28 @@ public class MainActivity extends AppCompatActivity {
                 retrieveInfo(name.getText().toString(), phone.getText().toString(), address.getText().toString());
             }
         });
+        findViewById(R.id.viewData).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayData();
+            }
+        });
     }
     public void retrieveInfo(String name, String phone, String address) {
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users").child(name);
         data.child("address").setValue(address);
         data.child("phone").setValue(phone);
-        Log.d(TAG, data.child("phone").getKey());
-
     }
-    public void getAllData() {
-        for (Map<String, String> h : details.values()) {
-            Log.d(TAG, h.get("address"));
-            Log.d(TAG, h.get("phone"));
+    public void displayData() {
+        String all = "";
+        for (String key : details.keySet()) {
+            all+=key+"\n"; // Username
+            all+="Address: " + details.get(key).get("address") + "\n"; // Address
+            all+="Phone: " + details.get(key).get("phone") + "\n\n"; // Phone
         }
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setMessage(all);
+        dialog.show();
     }
+
 }

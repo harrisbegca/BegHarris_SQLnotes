@@ -2,6 +2,7 @@ package com.example.sqlnotes;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 retrieveInfo(name.getText().toString(), phone.getText().toString(), address.getText().toString());
+                Toast.makeText(getBaseContext(), "Contact Created", Toast.LENGTH_LONG).show();
             }
         });
         findViewById(R.id.viewData).setOnClickListener(new View.OnClickListener() {
@@ -80,11 +82,19 @@ public class MainActivity extends AppCompatActivity {
                 displayData();
             }
         });
+        findViewById(R.id.searchQuery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getBaseContext(), Search.class);
+                startActivity(i);
+            }
+        });
     }
     public void retrieveInfo(String name, String phone, String address) {
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users").child(name);
         data.child("address").setValue(address);
         data.child("phone").setValue(phone);
+        data.child("name").setValue(name.toUpperCase());
     }
     public void displayData() {
         String all = "";

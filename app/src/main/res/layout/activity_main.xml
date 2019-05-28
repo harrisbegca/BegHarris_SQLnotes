@@ -82,7 +82,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/gradient"
                 android:text="SUBMIT"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/viewData"
@@ -92,7 +93,9 @@
                 android:layout_weight="1"
                 android:background="@drawable/gradient"
                 android:text="VIEW DATA"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
             <Button
                 android:id="@+id/searchQuery"
                 android:layout_width="match_parent"
@@ -101,7 +104,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/gradient"
                 android:text="SEARCH"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
         </LinearLayout>
 
     </LinearLayout>

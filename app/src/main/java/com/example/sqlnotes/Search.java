@@ -65,7 +65,7 @@ public class Search extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     TableRow tr = new TableRow(getBaseContext());
                     tr.setBackgroundColor(Color.WHITE);
-                    tr.setElevation(20f);
+                    //tr.setElevation(20);
                     tr.setPadding(20,20,20,20);
                     tr.setClipToPadding(false);
                     tr.setLayoutParams(new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.FILL_PARENT));

@@ -90,6 +90,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     *
+     * @param view The View layout
+     */
+    public void addData(View view) {
+        final TextView name = findViewById(R.id.name);
+        boolean isInserted = myDb.insertData((String) name.getText());
+        if (isInserted) {
+            Toast.makeText(this, "Inserted contact", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(this, "Failed inserting contact", Toast.LENGTH_LONG).show();
+        }
+    }
     public void retrieveInfo(String name, String phone, String address) {
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users").child(name);
         data.child("address").setValue(address);

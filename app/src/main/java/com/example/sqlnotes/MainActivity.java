@@ -30,13 +30,14 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private HashMap<String, HashMap<String, String>> details = new HashMap<>();
     DatabaseHelper myDb;
+    TextView name, phone, address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TextView name = findViewById(R.id.name);
-        final TextView phone = findViewById(R.id.phone);
-        final TextView address = findViewById(R.id.address);
+        name = findViewById(R.id.name);
+        phone = findViewById(R.id.phone);
+        address = findViewById(R.id.address);
         Button submit = findViewById(R.id.submit);
         //myDb = new DatabaseHelper(this);
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users");
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     HashMap<String, String> hm = new HashMap<>();
-                    hm.put("phone", dataSnapshot.child("phone").getValue(String.class));
+                    hm.put("phone", dataSnapshot.child("phone").getValue(String.class)); // Put phone from
                     hm.put("address", dataSnapshot.child("address").getValue(String.class));
                     details.put(dataSnapshot.getKey(), hm);
             }
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         submit.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 retrieveInfo(name.getText().toString(), phone.getText().toString(), address.getText().toString());
@@ -96,14 +98,11 @@ public class MainActivity extends AppCompatActivity {
      * @param view The View layout
      */
     public void addData(View view) {
-        final TextView name = findViewById(R.id.name);
-        boolean isInserted = myDb.insertData((String) name.getText());
-        if (isInserted) {
+        boolean isInserted = myDb.insertData(name.getText().toString(), address.getText().toString(), phone.getText().toString());
+        if (isInserted)
             Toast.makeText(this, "Inserted contact", Toast.LENGTH_LONG).show();
-        }
-        else {
+        else
             Toast.makeText(this, "Failed inserting contact", Toast.LENGTH_LONG).show();
-        }
     }
     public void retrieveInfo(String name, String phone, String address) {
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users").child(name);

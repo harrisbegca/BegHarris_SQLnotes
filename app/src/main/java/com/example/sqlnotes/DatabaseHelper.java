@@ -17,12 +17,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DATABASE";
     public static final String DESTROY_DATABASE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME_CONTACT + " TEXT, " + COLUMN_ADDRESS + " TEXT, " + COLUMN_PHONE + "TEXT )";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         // SQLiteDatabase db =this.getWritableDatabase();
         Log.d(TAG, "DatabaseHelper: CONSTRUCTED");
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -36,11 +36,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(DESTROY_DATABASE);
         onCreate(db);
     }
-    public boolean insertData(String name) {
+
+    public boolean insertData(String name, String address, String phone) {
         Log.d(TAG, "DatabaseHelper: INSERTED " + name);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME_CONTACT, name);
+        contentValues.put(COLUMN_ADDRESS, address);
+        contentValues.put(COLUMN_PHONE, phone);
         long result = db.insert(TABLE_NAME, null, contentValues);
         if (result == -1) {
             Log.d(TAG, "DatabaseHelper: FAILED TO INSERT " + name);

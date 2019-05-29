@@ -58,7 +58,6 @@ public class Search extends AppCompatActivity {
         final TableLayout table = findViewById(R.id.table);
         final Context c = this;
         search.addListenerForSingleValueEvent(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 table.removeAllViews();

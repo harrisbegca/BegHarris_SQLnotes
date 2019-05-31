@@ -3,6 +3,7 @@ package com.example.sqlnotes;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         phone = findViewById(R.id.phone);
         address = findViewById(R.id.address);
         Button submit = findViewById(R.id.submit);
-        //myDb = new DatabaseHelper(this);
+        myDb = new DatabaseHelper(this);
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users");
         data.addChildEventListener(new ChildEventListener() {
             @Override
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                addData(v);
                 retrieveInfo(name.getText().toString(), phone.getText().toString(), address.getText().toString());
                 Toast.makeText(getBaseContext(), "Contact Created", Toast.LENGTH_LONG).show();
             }
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.viewData).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // viewData(view) --> SQLite;
                 displayData();
             }
         });
@@ -104,6 +107,33 @@ public class MainActivity extends AppCompatActivity {
         else
             Toast.makeText(this, "Failed inserting contact", Toast.LENGTH_LONG).show();
     }
+
+    public void viewData(View view) {
+        Cursor res = myDb.getAllData();
+
+        if (res.getCount() == 0) {
+            showMessage("Error","No Data Found in DB");
+            return;
+        }
+
+        StringBuffer stringBuffer = new StringBuffer();
+        while (res.moveToNext()) {
+            //  append res col 0
+            stringBuffer.append("ID: " + res.getString(0) + "\n");
+            stringBuffer.append("NAME: " + res.getString(1) + "\n");
+            stringBuffer.append("ADDRESS: " + res.getString(2) + "\n");
+            stringBuffer.append("PHONE: " + res.getString(3) + "\n");
+            showMessage("Data",stringBuffer.toString());
+        }
+    }
+
+    public void showMessage(String title, String message) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(title);
+        dialog.setMessage(message);
+        dialog.show();
+    }
+
     public void retrieveInfo(String name, String phone, String address) {
         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("users").child(name);
         data.child("address").setValue(address);
